@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             HashMap<Integer, Integer> stopIdToIndex = DataLoader.loadStopIdToIndex("data/ZastavkyAll.csv");
-            List<Trip> trips = DataLoader.loadTrips("data/spoje_id_A_4.csv", stopIdToIndex);
+            List<Trip> trips = DataLoader.loadTrips("data/spoje_id_T4_3.csv", stopIdToIndex);
             TimeMatrix timeMatrix = new TimeMatrix("data/matrixTime.txt", stopIdToIndex.size());
 
             MemeticAlgorithm memeticAlgorithm = new MemeticAlgorithm(trips, timeMatrix, 500, 1000, 0.1, 0.1);
@@ -27,8 +27,11 @@ public class Main {
             double duration = (endTime - startTime) / 1_000_000_000.0;
 
             Solution bestSolution = memeticAlgorithm.getBestSolution();
-            System.out.println();
-            System.out.println("Počet turnusov najlepšieho riešenia: " + bestSolution.getFitness());
+            for (Trip trip : bestSolution.getTrips()) {
+                System.out.print(trip.getIndex() + " ");
+            }
+            
+            System.out.println("\nPočet turnusov najlepšieho riešenia: " + bestSolution.getFitness());
             System.out.println("Trvanie výpočtu: " + duration + " sekúnd");
         } catch (Exception e) {
             e.printStackTrace();

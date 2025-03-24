@@ -102,26 +102,31 @@ public class MemeticAlgorithm {
             Trip temp = trips[i];
             trips[i] = trips[j];
             trips[j] = temp;
-            return new Solution(trips, this.timeMatrix);
+            Solution s = new Solution(trips, this.timeMatrix);
+            updateBestSolution(s);
+            return s;
         }
         return solution;
     }
 
     public Solution localSearch(Solution solution) {
         if (random.nextDouble() < localSearchProbability) {
+            Solution newSolution = solution;
             Trip[] trips = solution.getTrips().clone();
             for (int i = 0; i < trips.length - 1; i++) {
                 Trip temp = trips[i];
                 trips[i] = trips[i + 1];
                 trips[i + 1] = temp;
-                Solution newSolution = new Solution(trips, this.timeMatrix);
+                 newSolution = new Solution(trips, this.timeMatrix);
                 if (newSolution.getFitness() < solution.getFitness()) {
-                    return newSolution;
+                    updateBestSolution(newSolution);
+                    
                 }
                 temp = trips[i];
                 trips[i] = trips[i + 1];
                 trips[i + 1] = temp;
             }
+            return newSolution;
         }
         return solution;
     }
@@ -138,9 +143,6 @@ public class MemeticAlgorithm {
                 Solution[] children = crossover(parent1, parent2);
                 Solution child1 = localSearch(mutate(children[0]));
                 Solution child2 = localSearch(mutate(children[1]));
-
-                updateBestSolution(child1);
-                updateBestSolution(child2);
 
                 newPopulation[2 * i] = child1;
                 newPopulation[2 * i + 1] = child2;

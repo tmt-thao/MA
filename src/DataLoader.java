@@ -32,6 +32,7 @@ public class DataLoader {
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         String line;
         reader.readLine();
+        reader.readLine();
 
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split(";");
@@ -47,6 +48,7 @@ public class DataLoader {
         }
 
         reader.close();
+        trips.remove(trips.size() - 1);
         return trips;
     }
 }
